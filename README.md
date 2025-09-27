@@ -18,8 +18,7 @@ WordPress installation on RedHat with 3 attached EBS volumes (10GB each) configu
 4. Configure instance details
 5. **Add Storage**: This is where you attach the 3 additional EBS volumes
 
-![EC2 Instance Launch]
-![](<web-server-Screenshot 2025-09-03 021147.png>)
+![EC2 Instance Launch](screenshots/web-server-Screenshot 2025-09-03 021147.png)
 
 ### 1.2 Add EBS Volumes During Instance Creation
 1. In the "Add Storage" section:
@@ -29,8 +28,7 @@ WordPress installation on RedHat with 3 attached EBS volumes (10GB each) configu
    - Volume type: gp3 (recommended)
    - Total: 4 volumes (1 root + 3 additional)
 
-![EBS Volumes Attachment]
-![](<adding-volumes-Screenshot 2025-09-03 021000.png>)
+![EBS Volumes Attachment](screenshots/adding-volumes-Screenshot 2025-09-03 021000.png)
 
 ### 1.3 Configure Security Group
 1. Create new security group or use existing
@@ -38,8 +36,7 @@ WordPress installation on RedHat with 3 attached EBS volumes (10GB each) configu
    - SSH (Port 22): Source 0.0.0.0/0
    - HTTP (Port 80): Source 0.0.0.0/0
 
-![Security Group Configuration]
-![](<security-group-Screenshot 2025-09-04 034537.png>)
+![Security Group Configuration](screenshots/security-group-Screenshot 2025-09-04 034537.png)
 
 ### 1.4 Launch and Connect
 1. Review and launch instance
@@ -60,8 +57,7 @@ lsblk
 sudo fdisk -l
 ```
 
-![Initial Volume Check]
-![](<database -logical-volume-Screenshot 2025-09-03 131206.png>)
+![Initial Volume Check](screenshots/database-logical-volume-Screenshot 2025-09-03 131206.png)
 
 ### 2.2 Identify New Volumes
 The 3 new volumes should appear as:
@@ -69,8 +65,7 @@ The 3 new volumes should appear as:
 - `/dev/xvdg` (10GB) 
 - `/dev/xvdh` (10GB)
 
-![Volume Identification]
-![](<four-volumes-running-Screenshot 2025-09-03 025649.png>)
+![Volume Identification](screenshots/four-volumes-running-Screenshot 2025-09-03 025649.png)
 
 ## Step 3: Disk Partitioning with gdisk
 
@@ -105,8 +100,7 @@ sudo gdisk /dev/xvdh
 lsblk
 ```
 
-![Disk Partitioning Complete]
-![](<databasee -ddisk-partitioningg-Screenshot 2025-09-03 130547.png>)
+![Disk Partitioning Complete](screenshots/databasee-ddisk-partitioningg-Screenshot 2025-09-03 130547.png)
 
 ## Step 4: LVM Setup
 
@@ -136,8 +130,7 @@ sudo pvcreate /dev/xvdh1
 sudo pvs
 ```
 
-![Physical Volumes Created]
-![](<creating -physical-volumes-on-3partition-Screenshot 2025-09-03 030242.png>)
+![Physical Volumes Created](screenshots/creating-physical-volumes-on-3partition-Screenshot 2025-09-03 030242.png)
 
 ### 4.3 Create Volume Group
 ```bash
@@ -148,8 +141,7 @@ sudo vgcreate wordpress-vg /dev/xvdf1 /dev/xvdg1 /dev/xvdh1
 sudo vgs
 ```
 
-![Volume Group Created]
-![](<creating volume-group-Screenshot 2025-09-03 030453.png>)
+![Volume Group Created](screenshots/creating-volume-group-Screenshot 2025-09-03 030453.png)
 
 ### 4.4 Create Logical Volumes
 ```bash
@@ -163,8 +155,7 @@ sudo lvcreate -L 10G -n database-lv wordpress-vg
 sudo lvs
 ```
 
-![Logical Volumes Created]
-![](<logical-volumes-creation-Screenshot 2025-09-03 030816.png>)
+![Logical Volumes Created](screenshots/logical-volumes-creation-Screenshot 2025-09-03 030816.png)
 
 ## Step 5: Filesystem Creation and Mounting
 
@@ -338,13 +329,11 @@ sudo chown -R apache:apache /var/www/wordpress
 sudo chmod -R 755 /var/www/wordpress
 ```
 
-![WordPress Installation]
-![](<apache-active-Screenshot 2025-09-03 141246.png>)
+![WordPress Installation](screenshots/apache-active-Screenshot 2025-09-03 141246.png)
 
 ## Final Result
 
-![WordPress Success Page]
-![](<wordpress-frontpage-Screenshot 2025-09-04 030141.png>)
+![WordPress Success Page](screenshots/wordpress-frontpage-Screenshot 2025-09-04 030141.png)
 
 ## Troubleshooting
 
